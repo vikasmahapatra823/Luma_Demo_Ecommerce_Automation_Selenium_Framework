@@ -1,9 +1,9 @@
-Feature: Swags Lab Login functionality
+Feature: This Feature File is to validate the End-to-End functionality of Luma Ecommerce Website
 
-  @Test
-  Scenario: To Verify Login of Ecommerce Website
+  @E2E-Test
+  Scenario: To Verify Add Cart Flow of Luma Ecommerce Website
     Given Navigate to the "LUMA" Ecommerce Website
-    And Perform the mouse "HOVERING" action on the "Men"
+    And Perform the mouse "Hovering" action on the "Men"
     And Click on the link "Tops"
     And Sort By "Product Name" in ""
     Then Wait for "5" seconds

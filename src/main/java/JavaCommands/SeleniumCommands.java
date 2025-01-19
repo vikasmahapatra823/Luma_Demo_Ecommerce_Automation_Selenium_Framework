@@ -1,18 +1,16 @@
 package JavaCommands;
 
 import Constants.ApplicationConstant;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class SeleniumCommands {
@@ -179,8 +177,14 @@ public class SeleniumCommands {
         }
 
     }
+    public static void takeScreenshot() throws IOException {
+        File src = ((TakesScreenshot) getWebdriver()).getScreenshotAs(OutputType.FILE);
+        byte[] fileContent = FileUtils.readFileToByteArray(src);
+        ApplicationConstant.currentScenario.attach(fileContent, "image/png", "");
+        }
+    }
 
-}
+
 
 
 
