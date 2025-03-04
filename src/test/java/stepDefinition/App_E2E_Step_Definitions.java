@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
+import java.io.IOException;
 import java.util.List;
 
 public class App_E2E_Step_Definitions extends GenericAction {
@@ -103,6 +104,17 @@ public class App_E2E_Step_Definitions extends GenericAction {
     @And("Verify the presence & get the product details:")
     public void verifyThePresenceGetTheProductDetails(DataTable dt) throws Exception {
         genericAction.verifyProductDetails(dt);
+
+    }
+
+    @Then("Click cart icon of {string} link")
+    public void clickCartIconOfLink(String cart) throws InterruptedException {
+        genericAction.myCart(cart);
+    }
+
+    @And("Save the following details in feature properties:")
+    public void saveTheFollowingDetailsInFeatureProperties(DataTable dt) throws IOException {
+        saveIntoFeatureProps(dt);
 
     }
 }
