@@ -9,6 +9,8 @@ import java.util.Map;
 public class ApplicationConstant {
 
     public static Scenario currentScenario;
+
+    public static String currentFeatureProps;
     public static String currentFeature;
     public static Map<Long, WebDriver> driverMap = new HashMap<>();
 

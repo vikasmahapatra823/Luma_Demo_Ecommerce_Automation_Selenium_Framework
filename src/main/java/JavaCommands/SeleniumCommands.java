@@ -114,10 +114,16 @@ public class SeleniumCommands {
     }
 
     public void scrollToElement(By element) throws InterruptedException {
-        WebElement element1 = getWebdriver().findElement(element);
-        JavascriptExecutor executor = (JavascriptExecutor) getWebdriver();
-        executor.executeScript("arguments[0].scrollIntoView(true);", element1);
-        Thread.sleep(500);
+        try {
+            WebElement element1 = getWebdriver().findElement(element);
+            JavascriptExecutor executor = (JavascriptExecutor) getWebdriver();
+            executor.executeScript("arguments[0].scrollIntoView(true);", element1);
+            Thread.sleep(500);
+        }
+        catch (Exception e){
+            System.out.println("The Exception Message is: "+ e.getMessage());
+        }
+
     }
 
     public String getText(By element) {

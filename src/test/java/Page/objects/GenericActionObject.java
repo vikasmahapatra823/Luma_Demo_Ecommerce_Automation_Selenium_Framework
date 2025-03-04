@@ -23,7 +23,7 @@ public class GenericActionObject {
 
 
     public static By productPrice(String product){
-       return By.xpath("//a[normalize-space(text())='"+product+"']/../..//span[@class='price']");
+       return By.xpath("(//a[normalize-space(text())='"+product+"']/../..//span[@class='price'])[last()]");
     }
     public static By cartIcon = By.xpath("//*[@class='shopping_cart_link']");
 
@@ -55,6 +55,10 @@ public class GenericActionObject {
 
     public static By productOptions(String product, String option){
         return By.xpath("//a[normalize-space(text())='"+product+"']/../..//div[@data-option-label='"+option+"']");
+    }
+
+    public static By myCart(String cart){
+        return By.xpath("(//a[@class='action showcart']/span[normalize-space(text()='"+cart+"')])[last()]");
     }
 
 

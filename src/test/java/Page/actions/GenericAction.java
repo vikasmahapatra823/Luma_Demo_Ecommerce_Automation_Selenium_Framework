@@ -2,17 +2,21 @@ package Page.actions;
 
 import Constants.ApplicationConstant;
 import JavaCommands.SeleniumCommands;
+import JavaUtils.GenericJavaUtilities;
 import Page.objects.GenericActionObject;
 import io.cucumber.datatable.DataTable;
 import org.openqa.selenium.By;
 import org.testng.Assert;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+
 public class GenericAction extends SeleniumCommands {
 
+    GenericJavaUtilities genericJavaUtilities = new GenericJavaUtilities();
     GenericActionObject genericActionObject = new GenericActionObject();
+
 
     public void navigateToUrl(String portal) {
         if (portal.equalsIgnoreCase("SWAGS LABS")) {
@@ -145,6 +149,35 @@ public class GenericAction extends SeleniumCommands {
 
     }
 
+    public void myCart(String cart) throws InterruptedException {
+        scrollToElement(GenericActionObject.myCart(cart));
+        clickElement(GenericActionObject.myCart(cart));
+    }
+
+    public void saveIntoFeatureProps(DataTable dt) throws IOException {
+        List<Map<String, String>> data = dt.asMaps(String.class, String.class);
+        for (int i = 0; i < data.size(); i++) {
+            String key = "";
+            String value = "";
+            String val = "";
+            key = data.get(i).get("Key");
+            value = data.get(i).get("Value");
+
+            if (value.contains("Price")) {
+                if (ApplicationConstant.globalDataMap.containsKey(value))
+                    val = ApplicationConstant.globalDataMap.get(value).trim();
+                System.out.println("The Amount is: " + val);
+            }
+            genericJavaUtilities.setProperty(key, val);
+            String dat = genericJavaUtilities.getProperty(key);
+            System.out.println("The stored amount from property file is: " + dat);
+
+        }
+
+        genericJavaUtilities.saveProperties();
+
+    }
 
 }
+
 

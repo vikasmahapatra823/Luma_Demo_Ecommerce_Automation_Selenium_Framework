@@ -12,6 +12,12 @@ Feature: This Feature File is to validate the End-to-End functionality of Luma E
       | Abominable Hoodie      | Red   | L    | You added Abominable Hoodie to your shopping cart.      |
       | Aero Daily Fitness Tee | Black | XL   | You added Aero Daily Fitness Tee to your shopping cart. |
     And Verify the presence & get the product details:
-      | Product Name      | Details          |
-      | Abominable Hoodie | Price_Abominable |
-      | Abominable Hoodie | Size:XS;S;M;L;XL |
+      | Product Name           | Details                      |
+      | Abominable Hoodie      | Price_Abominable             |
+      | Abominable Hoodie      | Size:XS;S;M;L;XL             |
+      | Aero Daily Fitness Tee | Price_Aero Daily Fitness Tee |
+    And Save the following details in feature properties:
+      | Key                    | Value                        |
+      | Abominable_Hoodie      | Price_Abominable             |
+      | Aero_Daily_Fitness_Tee | Price_Aero Daily Fitness Tee |
+    Then Click cart icon of "My Cart" link
