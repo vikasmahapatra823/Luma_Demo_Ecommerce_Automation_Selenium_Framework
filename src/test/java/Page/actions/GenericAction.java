@@ -7,6 +7,7 @@ import Page.objects.GenericActionObject;
 import io.cucumber.datatable.DataTable;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,11 @@ public class GenericAction extends SeleniumCommands {
             String color = item.get("Color");
             String size = item.get("Size");
             String expectedText = item.get("Text Message");
+
+            String keyName = productName.replaceAll("\\s", "");
+            genericJavaUtilities.setProperty(keyName + "_color", color);
+            genericJavaUtilities.setProperty(keyName + "_size", size);
+
             try {
                 clickElement(GenericActionObject.productOptions(productName, color));
                 clickElement(GenericActionObject.productOptions(productName, size));
@@ -100,6 +106,8 @@ public class GenericAction extends SeleniumCommands {
                 throw e;
             }
         }
+
+
     }
 
 
@@ -108,7 +116,7 @@ public class GenericAction extends SeleniumCommands {
 
         String productName = "";
         String details = "";
-
+        double subTotal = 0.00;
         for (int i = 0; i < items.size(); i++) {
             productName = items.get(i).get("Product Name");
             details = items.get(i).get("Details");
@@ -117,6 +125,7 @@ public class GenericAction extends SeleniumCommands {
                 String value = getText(GenericActionObject.productPrice(productName));
                 ApplicationConstant.globalDataMap.put(details, value);
                 highlightText(GenericActionObject.productPrice(productName));
+                subTotal += Double.parseDouble(value.split("€")[1].trim());
             } else if (details.contains("Size:")) {
                 String[] values = details.split(":")[1].split(";");
                 for (String value : values) {
@@ -131,6 +140,8 @@ public class GenericAction extends SeleniumCommands {
                 }
             }
         }
+        String sub_total = String.join("", "€", String.format("%.2f", subTotal));
+        genericJavaUtilities.setProperty("Sub_Total", sub_total);
     }
 
     public void sortingBy(String options, String sort) {
@@ -149,9 +160,15 @@ public class GenericAction extends SeleniumCommands {
 
     }
 
-    public void myCart(String cart) throws InterruptedException {
+    public void myCart(String cart) throws Exception {
         scrollToElement(GenericActionObject.myCart(cart));
         clickElement(GenericActionObject.myCart(cart));
+        explicitWait(3000, GenericActionObject.cartSubtotal);
+        String actual_subTotal = getText(GenericActionObject.cartSubtotal);
+        String expected_subTotal = genericJavaUtilities.getProperty("Sub_Total");
+        Assert.assertEquals(actual_subTotal, expected_subTotal, "The actual amount is not matching with expected amount");
+        verifyPresence(GenericActionObject.cartSubtotal);
+
     }
 
     public void saveIntoFeatureProps(DataTable dt) throws IOException {

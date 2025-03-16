@@ -7,7 +7,7 @@ Feature: This Feature File is to validate the End-to-End functionality of Luma E
     And Click on the link "Tops"
     And Sort By "Product Name" in ""
     Then Wait for "5" seconds
-    Then Add the List of Product items:
+    Then Add the list of product items & verify the success message upon adding the product items into cart:
       | Product Name           | Color | Size | Text Message                                            |
       | Abominable Hoodie      | Red   | L    | You added Abominable Hoodie to your shopping cart.      |
       | Aero Daily Fitness Tee | Black | XL   | You added Aero Daily Fitness Tee to your shopping cart. |
@@ -21,3 +21,5 @@ Feature: This Feature File is to validate the End-to-End functionality of Luma E
       | Abominable_Hoodie      | Price_Abominable             |
       | Aero_Daily_Fitness_Tee | Price_Aero Daily Fitness Tee |
     Then Click cart icon of "My Cart" link
+    And Verify the sub total and product price of items on cart:
+

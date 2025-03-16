@@ -91,9 +91,10 @@ public class App_E2E_Step_Definitions extends GenericAction {
         genericAction.mouseHoverClickAction(actionName, targetName);
     }
 
-    @Then("Add the List of Product items:")
+    @Then("Add the list of product items & verify the success message upon adding the product items into cart:")
     public void addTheListOfProductItems(DataTable dt) throws Exception {
         genericAction.addProduct(dt);
+
     }
 
     @And("Sort By {string} in {string}")
@@ -108,13 +109,18 @@ public class App_E2E_Step_Definitions extends GenericAction {
     }
 
     @Then("Click cart icon of {string} link")
-    public void clickCartIconOfLink(String cart) throws InterruptedException {
+    public void clickCartIconOfLink(String cart) throws Exception {
         genericAction.myCart(cart);
     }
 
     @And("Save the following details in feature properties:")
     public void saveTheFollowingDetailsInFeatureProperties(DataTable dt) throws IOException {
         saveIntoFeatureProps(dt);
+
+    }
+
+    @And("Verify the sub total and product price of items on cart:")
+    public void verifyTheSubTotalAndProductPriceOfItemsOnCart() {
 
     }
 }
