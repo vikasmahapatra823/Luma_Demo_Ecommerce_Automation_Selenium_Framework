@@ -22,4 +22,8 @@ Feature: This Feature File is to validate the End-to-End functionality of Luma E
       | Aero_Daily_Fitness_Tee | Price_Aero Daily Fitness Tee |
     Then Click cart icon of "My Cart" link
     And Verify the sub total and product price of items on cart:
+      | Key                    | Element                |
+      | Abominable_Hoodie      | Abominable Hoodie      |
+      | Aero_Daily_Fitness_Tee | Aero Daily Fitness Tee |
+      | Sub_Total              | Sub Total              |
 

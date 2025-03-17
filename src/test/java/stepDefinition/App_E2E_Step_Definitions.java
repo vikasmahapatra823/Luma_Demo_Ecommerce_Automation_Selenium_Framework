@@ -120,7 +120,7 @@ public class App_E2E_Step_Definitions extends GenericAction {
     }
 
     @And("Verify the sub total and product price of items on cart:")
-    public void verifyTheSubTotalAndProductPriceOfItemsOnCart() {
-
+    public void verifyTheSubTotalAndProductPriceOfItemsOnCart(DataTable dt) throws Exception {
+        verifyMiniCartItems(dt);
     }
 }

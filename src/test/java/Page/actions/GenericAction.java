@@ -164,11 +164,30 @@ public class GenericAction extends SeleniumCommands {
         scrollToElement(GenericActionObject.myCart(cart));
         clickElement(GenericActionObject.myCart(cart));
         explicitWait(3000, GenericActionObject.cartSubtotal);
-        String actual_subTotal = getText(GenericActionObject.cartSubtotal);
-        String expected_subTotal = genericJavaUtilities.getProperty("Sub_Total");
-        Assert.assertEquals(actual_subTotal, expected_subTotal, "The actual amount is not matching with expected amount");
-        verifyPresence(GenericActionObject.cartSubtotal);
+    }
 
+    public void verifyMiniCartItems(DataTable dt) throws Exception {
+        List<Map<String, String>> data = dt.asMaps(String.class, String.class);
+        for (Map<String, String> datum : data) {
+            String key = "";
+            String elementName = "";
+            key = datum.get("Key");
+            elementName = datum.get("Element");
+
+            if(elementName.equalsIgnoreCase("Sub Total")){
+                String actual_subTotal = getText(GenericActionObject.cartSubtotal);
+                String expected_subTotal = genericJavaUtilities.getProperty(key);
+                Assert.assertEquals(actual_subTotal, expected_subTotal, "The actual amount is not matching with expected amount");
+                verifyPresence(GenericActionObject.cartSubtotal);
+                highlightText(GenericActionObject.cartSubtotal);
+            }
+            else{
+                String actual_amt = getText(GenericActionObject.productPriceOnCart(elementName));
+                String expected_amt = genericJavaUtilities.getProperty(key);
+                Assert.assertEquals(actual_amt, expected_amt, "The actual amount is not matching with expected amount");
+            }
+
+        }
     }
 
     public void saveIntoFeatureProps(DataTable dt) throws IOException {
