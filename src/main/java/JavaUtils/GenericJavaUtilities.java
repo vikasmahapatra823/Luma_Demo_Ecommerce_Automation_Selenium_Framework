@@ -53,6 +53,13 @@ public class GenericJavaUtilities {
         }
     }
 
+    public void clearProperties(String filePath) throws IOException {
+        properties.clear();
+        try (FileWriter writer = new FileWriter(filePath)) {
+            properties.store(writer, null);
+        }
+    }
+
 }
 
 
