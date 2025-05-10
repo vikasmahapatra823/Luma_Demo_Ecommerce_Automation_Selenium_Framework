@@ -17,13 +17,30 @@ Feature: This Feature File is to validate the End-to-End functionality of Luma E
       | Abominable Hoodie      | Size:XS;S;M;L;XL             |
       | Aero Daily Fitness Tee | Price_Aero Daily Fitness Tee |
     And Save the following details in feature properties:
-      | Key                    | Value                        |
-      | Abominable_Hoodie      | Price_Abominable             |
-      | Aero_Daily_Fitness_Tee | Price_Aero Daily Fitness Tee |
+      | Key                         | Value                        |
+      | Abominable_Hoodie_Cost      | Price_Abominable             |
+      | Aero_Daily_Fitness_Tee_Cost | Price_Aero Daily Fitness Tee |
     Then Click cart icon of "My Cart" link
     And Verify the sub total and product price of items on cart:
-      | Key                    | Element                |
-      | Abominable_Hoodie      | Abominable Hoodie      |
-      | Aero_Daily_Fitness_Tee | Aero Daily Fitness Tee |
-      | Sub_Total              | Sub Total              |
+      | Key                         | Element                |
+      | Abominable_Hoodie_Cost      | Abominable Hoodie      |
+      | Aero_Daily_Fitness_Tee_Cost | Aero Daily Fitness Tee |
+      | Sub_Total                   | Sub Total              |
+    Then Update the product items on the shopping cart list:
+      | Product Name           | QTY | Key                                 |
+      | Aero Daily Fitness Tee | 2   | Updated_Aero_Daily_Fitness_Tee_Cost |
+      | Abominable Hoodie      | 2   | Updated_Abominable_Hoodie_Cost      |
+    And Verify the sub total and product price of items on cart:
+      | Key                         | Element                |
+      | Abominable_Hoodie_Cost      | Abominable Hoodie      |
+      | Aero_Daily_Fitness_Tee_Cost | Aero Daily Fitness Tee |
+      | Sub_Total                   | Sub Total              |
+    And Click on the hyperlink of "View and Edit Cart"
+    And Wait for "5" seconds
+    And Verify the page navigation url ends with "checkout/cart/"
+    And Verify the Page Header is "Shopping Cart"
+
+
+
+
 

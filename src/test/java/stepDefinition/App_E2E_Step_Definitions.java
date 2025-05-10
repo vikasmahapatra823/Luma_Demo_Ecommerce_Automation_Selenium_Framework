@@ -23,12 +23,12 @@ public class App_E2E_Step_Definitions extends GenericAction {
 
 
     @And("Login to the Ecommerce Website as {string}")
-    public void loginToTheEcommerceWebsiteAs(String applicationUser) {
+    public void loginToTheEcommerceWebsiteAs(String applicationUser) throws Exception {
         genericAction.loginCredentials(applicationUser);
     }
 
     @And("Click on the link {string} via Customer Menu bar")
-    public void clickTheLink(String str) {
+    public void clickTheLink(String str) throws Exception {
         genericAction.customerMenuItems(str);
     }
 
@@ -51,7 +51,7 @@ public class App_E2E_Step_Definitions extends GenericAction {
     }
 
     @And("Click on the {string} button")
-    public void clickOnTheButton(String btn) {
+    public void clickOnTheButton(String btn) throws Exception {
         genericAction.clickButton(btn);
     }
 
@@ -98,7 +98,7 @@ public class App_E2E_Step_Definitions extends GenericAction {
     }
 
     @And("Sort By {string} in {string}")
-    public void sortByIn(String option, String order) {
+    public void sortByIn(String option, String order) throws Exception {
         sortingBy(option, order);
     }
 
@@ -122,5 +122,21 @@ public class App_E2E_Step_Definitions extends GenericAction {
     @And("Verify the sub total and product price of items on cart:")
     public void verifyTheSubTotalAndProductPriceOfItemsOnCart(DataTable dt) throws Exception {
         verifyMiniCartItems(dt);
+    }
+
+    @Then("Update the product items on the shopping cart list:")
+    public void updateTheProductItemsOnTheShoppingCartList(DataTable dt) throws Exception {
+        updateQTY(dt);
+
+    }
+
+    @And("Click on the hyperlink of {string}")
+    public void clickOnTheHyperlinkOf(String link) throws Exception {
+        clickOnHyperlink(link);
+    }
+
+    @And("Verify the page navigation url ends with {string}")
+    public void verifyThePageNavigationUrlEndsWith(String urlPath) {
+        urlValidation(urlPath);
     }
 }

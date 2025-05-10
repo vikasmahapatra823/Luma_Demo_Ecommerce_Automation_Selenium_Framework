@@ -21,6 +21,10 @@ public class GenericActionObject {
 
     }
 
+    public static By hyperLink(String link){
+        return By.xpath("//a/span[text()='"+link+"']");
+    }
+
     public static By messageAddProduct = By.xpath("//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']");
 
 
@@ -37,7 +41,7 @@ public class GenericActionObject {
     public static By cartIcon = By.xpath("//*[@class='shopping_cart_link']");
 
     public By headerContent(String strText) {
-        return By.xpath("//*[@class='title'][text()='" + strText + "']");
+        return By.xpath("//h1[contains(@class, 'title')]//span[text()='" + strText + "']");
     }
 
     public By paraContent(String paraText) {
@@ -68,6 +72,15 @@ public class GenericActionObject {
 
     public static By myCart(String cart) {
         return By.xpath("(//a[@class='action showcart']/span[normalize-space(text()='" + cart + "')])[last()]");
+    }
+
+
+    public static By updateProductQty(String product){
+        return  By.xpath("//a[normalize-space(text())='"+product+"']/../..//div[@class='details-qty qty']/input");
+    }
+
+    public static By updateButton(String product){
+        return  By.xpath("//a[normalize-space(text())='"+product+"']/../..//div[@class='details-qty qty']/button");
     }
 
 

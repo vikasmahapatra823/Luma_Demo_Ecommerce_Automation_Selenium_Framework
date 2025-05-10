@@ -11,7 +11,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import java.io.IOException;
+
 
 
 @CucumberOptions(features = {"classpath:FeatureFiles/App_E2E_Flow.feature"},
@@ -26,7 +26,7 @@ public class App_E2E_Runner extends AbstractTestNGCucumberTests {
     public static WebDriver driver;
 
     @BeforeClass
-    public static void Setup() throws InterruptedException {
+    public static void Setup() {
         String browser = "Chrome";
         launchBrowser(browser);
         ApplicationConstant.driverMap.put(Thread.currentThread().threadId(), driver);
@@ -35,7 +35,7 @@ public class App_E2E_Runner extends AbstractTestNGCucumberTests {
     }
 
     @AfterClass
-    public static void tearDown() throws IOException {
+    public static void tearDown() {
 
 //        driver.quit();
 
@@ -45,6 +45,8 @@ public class App_E2E_Runner extends AbstractTestNGCucumberTests {
 
         switch (browserName) {
             case "Chrome":
+//                ChromeOptions options = new ChromeOptions();
+//                options.addArguments("headless");
                 driver = new ChromeDriver();
                 break;
             case "ChromeDebugger":
