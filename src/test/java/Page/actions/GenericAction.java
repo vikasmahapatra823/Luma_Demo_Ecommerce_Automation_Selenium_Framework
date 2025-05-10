@@ -29,7 +29,7 @@ public class GenericAction extends SeleniumCommands {
         }
     }
 
-    public void loginCredentials(String Users) {
+    public void loginCredentials(String Users) throws Exception {
         String username = "", password = "";
         if (Users.equalsIgnoreCase("Standard User")) {
             username = ApplicationConstant.USERNAME;
@@ -52,6 +52,11 @@ public class GenericAction extends SeleniumCommands {
         clickElement(GenericActionObject.MENU_HOVER_LINK(text));
     }
 
+    public void clickOnHyperlink(String link) throws Exception {
+        scrollToElement(GenericActionObject.hyperLink(link));
+        clickElement(GenericActionObject.hyperLink(link));
+    }
+
     public void customerMenuItems(String linkText) {
         clickElement(GenericActionObject.CUSTOMER_MENU);
         clickElement(By.xpath(GenericActionObject.CUSTOMER_MENU_LINK(linkText)));
@@ -67,7 +72,8 @@ public class GenericAction extends SeleniumCommands {
 
     }
 
-    public void verifyPageHeader(String header) throws Exception {
+    public void verifyPageHeader(String header) {
+
         highlightText(genericActionObject.headerContent(header));
     }
 
@@ -144,7 +150,7 @@ public class GenericAction extends SeleniumCommands {
         genericJavaUtilities.setProperty("Sub_Total", sub_total);
     }
 
-    public void sortingBy(String options, String sort) {
+    public void sortingBy(String options, String sort)  {
         if ("ASC".equalsIgnoreCase(sort)) {
             clickElement(GenericActionObject.sorting());
             clickElement(GenericActionObject.sortingValue(options));
@@ -174,14 +180,15 @@ public class GenericAction extends SeleniumCommands {
             key = datum.get("Key");
             elementName = datum.get("Element");
 
-            if(elementName.equalsIgnoreCase("Sub Total")){
-                String actual_subTotal = getText(GenericActionObject.cartSubtotal);
+            if (elementName.equalsIgnoreCase("Sub Total")) {
                 String expected_subTotal = genericJavaUtilities.getProperty(key);
+                textVisibility(10, GenericActionObject.cartSubtotal, expected_subTotal);
+                String actual_subTotal = getText(GenericActionObject.cartSubtotal);
+
                 Assert.assertEquals(actual_subTotal, expected_subTotal, "The actual amount is not matching with expected amount");
                 verifyPresence(GenericActionObject.cartSubtotal);
                 highlightText(GenericActionObject.cartSubtotal);
-            }
-            else{
+            } else {
                 String actual_amt = getText(GenericActionObject.productPriceOnCart(elementName));
                 String expected_amt = genericJavaUtilities.getProperty(key);
                 Assert.assertEquals(actual_amt, expected_amt, "The actual amount is not matching with expected amount");
@@ -190,7 +197,7 @@ public class GenericAction extends SeleniumCommands {
         }
     }
 
-    public void saveIntoFeatureProps(DataTable dt) throws IOException {
+    public void saveIntoFeatureProps(DataTable dt) {
         List<Map<String, String>> data = dt.asMaps(String.class, String.class);
         for (int i = 0; i < data.size(); i++) {
             String key = "";
@@ -214,6 +221,54 @@ public class GenericAction extends SeleniumCommands {
 
     }
 
-}
+    public void updateQTY(DataTable dt)  {
+
+        List<Map<String, String>> data = dt.asMaps(String.class, String.class);
+        double getSubTotal;
+        String qty = "";
+        String productName = "";
+        String key = "";
+        for (Map<String, String> datum : data) {
+            productName = datum.get("Product Name");
+            qty = datum.get("QTY");
+            key = datum.get("Key");
+            keyBoardAction(GenericActionObject.updateProductQty(productName), "CLEAR INPUT");
+            SendInput(GenericActionObject.updateProductQty(productName), qty);
+            keyBoardAction(GenericActionObject.updateProductQty(productName), "PRESS TAB");
+            clickElement(GenericActionObject.updateButton(productName));
+
+            if (key.contains("Updated_")) {
+                String getKey = key.split("Updated_")[1].trim();
+                double getValue = Double.parseDouble(genericJavaUtilities.getProperty(getKey).split("€")[1].trim());
+                double getCost = getValue * Integer.parseInt(qty);
+
+                String value = String.join("", "€", String.format("%.2f", getCost));
+                ApplicationConstant.globalDataMap.put(productName, value);
+                genericJavaUtilities.setProperty(key, value);
+
+                getSubTotal = Double.parseDouble(genericJavaUtilities.getProperty("Sub_Total").split("€")[1].trim());
+                double getUpdatedCost = getSubTotal + (getCost - getValue);
+                String getUpdatedValue = String.join("", "€", String.format("%.2f", getUpdatedCost));
+                genericJavaUtilities.setProperty("Sub_Total", getUpdatedValue);
+
+            } else {
+                System.out.println("The given key is not valid or Qty may be empty");
+            }
+        }
+        }
+
+        public void urlValidation(String url){
+            String getUrl =  getCurrentURL();
+            System.out.println("The actual url is: "+getUrl);
+            if(getUrl.endsWith(url)){
+                System.out.println("The user is navigated to the correct page");
+            }
+            else{
+                System.out.println("The user is navigated to the incorrect page");
+            }
+        }
+    }
+
+
 
 

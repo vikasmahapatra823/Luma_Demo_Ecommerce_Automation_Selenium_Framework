@@ -5,6 +5,8 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
@@ -55,8 +57,13 @@ public class SeleniumCommands {
         } catch (Exception e) {
             methodFailureMessage = "Unable to Perform Action " + action + " because of an Exception " + e.getMessage();
 
+
         }
 
+    }
+
+    public static String getCurrentURL(){
+        return getWebdriver().getCurrentUrl();
     }
 
     public void mouseAction(By element, String actionName) {
@@ -81,13 +88,63 @@ public class SeleniumCommands {
 
     }
 
+    public void keyBoardAction(By element, String actionName){
+        try{
+            WebElement webElement = findElement(element);
+            if (actionName.equalsIgnoreCase("CLEAR INPUT")) {
+                webElement.sendKeys(Keys.CONTROL + "a");
+                webElement.sendKeys(Keys.BACK_SPACE);
+            }
+            else if(actionName.equalsIgnoreCase("PRESS TAB")){
+                webElement.sendKeys(Keys.TAB);
+            }
+            else if(actionName.equalsIgnoreCase("OPEN NEW TAB")){
+                webElement.sendKeys(Keys.CONTROL + "t");
+            }
+        }
+        catch (Exception e){
+            System.out.println("The exception message is: "+methodFailureMessage);
+        }
+    }
+
     public void SendInput(By ele, String input) {
 
         try {
-            getWebdriver().findElement(ele).sendKeys(input);
+            WebElement webElement = findElement(ele);
+            webElement.sendKeys(input);
         } catch (Exception e) {
             methodFailureMessage = "Unable to send Data because of an Exception" + e.getMessage();
-            ;
+
+        }
+    }
+
+    public void clearText(By ele){
+        try {
+            WebElement element = findElement(ele);
+            element.clear();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void elementVisibility(Integer Seconds, By element) throws Exception {
+        try {
+            WebElement ele = findElement(element);
+            WebDriverWait wait = new WebDriverWait(getWebdriver(), Duration.ofSeconds(Seconds));
+            wait.until(ExpectedConditions.visibilityOf(ele));
+        }
+        catch (Exception e){
+            throw new Exception("Element not found :: " + e.getMessage());
+        }
+    }
+
+    public void textVisibility(Integer seconds, By locator , String txt) throws Exception {
+        try {
+            WebDriverWait wait = new WebDriverWait(getWebdriver(), Duration.ofSeconds(seconds));
+            wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, txt));
+        }
+        catch (Exception e){
+            throw new Exception("Element not found :: " + e.getMessage());
         }
     }
 
@@ -109,13 +166,42 @@ public class SeleniumCommands {
         }
     }
 
-    public void clickElement(By element) {
-        getWebdriver().findElement(element).click();
+    public void waitUntilReadyToClick(By element)  {
+
+        Wait<WebDriver> wait = new FluentWait<>(getWebdriver())
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofSeconds(3))
+                .ignoring(NoSuchElementException.class);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void scrollToElement(By element) throws InterruptedException {
+    public void javaScriptClickElement(By element){
+        try{
+            WebElement ele = findElement(element);
+            waitUntilReadyToClick(element);
+            JavascriptExecutor js = (JavascriptExecutor) getWebdriver();
+            js.executeScript("arguments[0].click();", ele);
+        }
+        catch (Exception e){
+            System.out.println("Element not clicked - " + element + "Exception: "+methodFailureMessage);
+        }
+    }
+
+
+    public void clickElement(By element)  {
         try {
-            WebElement element1 = getWebdriver().findElement(element);
+            waitUntilReadyToClick(element);
+            WebElement ele = findElement(element);
+            ele.click();
+        }
+        catch (Exception e){
+            System.out.println("Element not clicked - " + element + "Exception: "+methodFailureMessage);
+        }
+    }
+
+    public void scrollToElement(By element)  {
+        try {
+            WebElement element1 = findElement(element);
             JavascriptExecutor executor = (JavascriptExecutor) getWebdriver();
             executor.executeScript("arguments[0].scrollIntoView(true);", element1);
             Thread.sleep(500);
@@ -127,8 +213,14 @@ public class SeleniumCommands {
     }
 
     public String getText(By element) {
-        WebElement element1 = getWebdriver().findElement(element);
-        return element1.getText();
+        try {
+            WebElement element1 = findElement(element);
+            return element1.getText();
+        }
+        catch (Exception e){
+            return "The Execption Message is: "+e.getMessage();
+        }
+
     }
 
     public WebElement findElement(By locator) throws Exception {
