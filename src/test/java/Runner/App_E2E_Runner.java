@@ -11,7 +11,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-
+import org.testng.annotations.Parameters;
 
 
 @CucumberOptions(features = {"classpath:FeatureFiles/App_E2E_Flow.feature"},
@@ -26,9 +26,9 @@ public class App_E2E_Runner extends AbstractTestNGCucumberTests {
     public static WebDriver driver;
 
     @BeforeClass
-    public static void Setup() {
-        String browser = "Chrome";
-        launchBrowser(browser);
+    @Parameters("Chrome-Headless")
+    public static void Setup(String param) {
+        launchBrowser(param);
         ApplicationConstant.driverMap.put(Thread.currentThread().threadId(), driver);
         driver.manage().window().maximize();
 
@@ -43,9 +43,15 @@ public class App_E2E_Runner extends AbstractTestNGCucumberTests {
 
         switch (browserName) {
             case "Chrome":
-//                ChromeOptions options = new ChromeOptions();
-//                options.addArguments("headless");
                 driver = new ChromeDriver();
+                break;
+            case "Chrome-Headless":
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("headless");
+                options.addArguments("--disable-notifications");
+                options.addArguments("--window-size=1920,1080");
+                options.addArguments("--start-maximized");
+                driver = new ChromeDriver(options);
                 break;
             case "ChromeDebugger":
                 ChromeOptions opt = new ChromeOptions();
