@@ -36,9 +36,7 @@ public class App_E2E_Runner extends AbstractTestNGCucumberTests {
 
     @AfterClass
     public static void tearDown() {
-
-//        driver.quit();
-
+        driver.quit();
     }
 
     public static void launchBrowser(String browserName) {
