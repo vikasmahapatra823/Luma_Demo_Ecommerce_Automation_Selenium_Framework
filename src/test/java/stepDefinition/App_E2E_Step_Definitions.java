@@ -39,8 +39,9 @@ public class App_E2E_Step_Definitions extends GenericAction {
     }
 
     @Then("Verify the product item is {string}")
-    public void verifyTheProductItemIs(String item) {
+    public void verifyTheProductItemIs(String item) throws IOException {
         genericAction.verifyPageContent(item);
+        takeScreenshot();
 
     }
 
@@ -105,6 +106,7 @@ public class App_E2E_Step_Definitions extends GenericAction {
     @And("Verify the presence & get the product details:")
     public void verifyThePresenceGetTheProductDetails(DataTable dt) throws Exception {
         genericAction.verifyProductDetails(dt);
+        takeScreenshot();
 
     }
 
@@ -122,6 +124,7 @@ public class App_E2E_Step_Definitions extends GenericAction {
     @And("Verify the sub total and product price of items on cart:")
     public void verifyTheSubTotalAndProductPriceOfItemsOnCart(DataTable dt) throws Exception {
         verifyMiniCartItems(dt);
+        takeScreenshot();
     }
 
     @Then("Update the product items on the shopping cart list:")
