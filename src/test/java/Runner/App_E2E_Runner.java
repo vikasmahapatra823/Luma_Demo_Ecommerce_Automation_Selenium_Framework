@@ -1,6 +1,7 @@
 package Runner;
 
 import Constants.ApplicationConstant;
+import JavaUtils.GenericJavaUtilities;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
@@ -25,12 +26,14 @@ public class App_E2E_Runner extends AbstractTestNGCucumberTests {
 
     public static WebDriver driver;
 
+
     @BeforeClass
     @Parameters("Chrome-Headless")
     public static void Setup(String param) {
         launchBrowser(param);
         ApplicationConstant.driverMap.put(Thread.currentThread().threadId(), driver);
         driver.manage().window().maximize();
+        GenericJavaUtilities.timeStampGenerator();
 
     }
 

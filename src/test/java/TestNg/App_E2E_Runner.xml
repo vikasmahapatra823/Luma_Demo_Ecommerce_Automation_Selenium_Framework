@@ -2,9 +2,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
     <test name="Runner.App_E2E_Runner">
-        <parameter name="Chrome-Headless" value="Chrome-Headless"/>
+        <parameter name="param" value="Chrome"/>
         <classes>
             <class name="Runner.App_E2E_Runner" />
         </classes>
     </test>
+    <test name="Runner.Post_Build_Runner">
+        <classes>
+            <class name="Runner.Post_Build_Runner" />
+        </classes>
+</test>
 </suite>
