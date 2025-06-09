@@ -4,6 +4,8 @@ import Constants.ApplicationConstant;
 import Constants.PathConstant;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class GenericJavaUtilities {
@@ -58,6 +60,11 @@ public class GenericJavaUtilities {
         try (FileWriter writer = new FileWriter(filePath)) {
             properties.store(writer, null);
         }
+    }
+
+    public static void timeStampGenerator(){
+        ApplicationConstant.current_time_stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-MMM-yy HH-mm"));
+
     }
 
 }
